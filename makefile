@@ -1,4 +1,4 @@
-FLAGS= -DDEBUG
+FLAGS= -DDEBUG -x cu
 LIBS= -lm -lcudart
 CC=nvcc
 
