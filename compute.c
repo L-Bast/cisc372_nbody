@@ -4,7 +4,6 @@
 #include "vector.h"
 #include "config.h"
 
-
 extern vector3 *d_hPos;
 extern vector3 *d_hVel;
 extern double *d_mass;
