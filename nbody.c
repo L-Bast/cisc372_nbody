@@ -8,13 +8,13 @@
 #include "compute.h"
 #include <cuda_runtime.h>
 
-// represents the objects in the system. Global variables
+
 vector3 *hVel, *d_hVel;
 vector3 *hPos, *d_hPos;
 double *mass;
 double *d_mass;
 
-// initHostMemory
+
 void initHostMemory(int numObjects)
 {
 	hVel = (vector3 *)malloc(sizeof(vector3) * numObjects);
@@ -22,7 +22,6 @@ void initHostMemory(int numObjects)
 	mass = (double *)malloc(sizeof(double) * numObjects);
 }
 
-// freeHostMemory
 void freeHostMemory()
 {
 	free(hVel);
@@ -30,7 +29,7 @@ void freeHostMemory()
 	free(mass);
 }
 
-// planetFill
+
 void planetFill(){
 	int i,j;
 	double data[][7]={SUN,MERCURY,VENUS,EARTH,MARS,JUPITER,SATURN,URANUS,NEPTUNE};
@@ -43,7 +42,7 @@ void planetFill(){
 	}
 }
 
-// randomFill
+
 void randomFill(int start, int count)
 {
 	int i, j;
@@ -58,7 +57,7 @@ void randomFill(int start, int count)
 	}
 }
 
-// printSystem
+
 void printSystem(FILE* handle){
 	int i,j;
 	for (i=0;i<NUMENTITIES;i++){
@@ -85,12 +84,12 @@ int main(int argc, char **argv)
 	planetFill();
 	randomFill(NUMPLANETS + 1, NUMASTEROIDS);
 
-	// GPU allocations
+
 	cudaMalloc((void**)&d_hPos, sizeof(vector3) * NUMENTITIES);
 	cudaMalloc((void**)&d_hVel, sizeof(vector3) * NUMENTITIES);
 	cudaMalloc((void**)&d_mass, sizeof(double) * NUMENTITIES);
 
-	// copy to GPU
+
 	cudaMemcpy(d_hPos, hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyHostToDevice);
 	cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyHostToDevice);
 	cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
@@ -103,7 +102,7 @@ int main(int argc, char **argv)
 		compute();
 	}
 
-	// copy back
+
 	cudaMemcpy(hPos, d_hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost);
 	cudaMemcpy(hVel, d_hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost);
 
